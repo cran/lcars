@@ -77,6 +77,7 @@ text(7.55, 0.1, "LCARS BETA R Interface v0.0.1",
 #  lcarsApp("sweep")
 #  lcarsApp("toggle")
 #  lcarsApp("elements")
+#  lcarsApp("leaflet")
 
 ## ----img1, echo=FALSE---------------------------------------------------------
 knitr::include_graphics("lcarsBox-ex1.png")

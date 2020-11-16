@@ -8,19 +8,83 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 
 <title>Introduction to lcars</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -30,14 +94,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -46,9 +112,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -115,9 +181,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -286,7 +349,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -306,39 +370,39 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="making-a-static-plot" class="section level2">
 <h2>Making a static plot</h2>
 <p>This examples adds an LCARS-style border around a static plot. Keep in mind that while the <code>lcars_border</code> function below takes a ggplot object, the result is not a returnable ggplot object. The function uses the <code>grid</code> package underneath the hood and draws the necessary elements using viewports.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(lcars)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(trekcolors)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(grid)</a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(png)</a>
-<a class="sourceLine" id="cb1-6" title="6"></a>
-<a class="sourceLine" id="cb1-7" title="7">logo &lt;-<span class="st"> </span><span class="kw">rasterGrob</span>(<span class="kw">readPNG</span>(<span class="kw">system.file</span>(<span class="st">&quot;stlogo-white.png&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;lcars&quot;</span>)))</a>
-<a class="sourceLine" id="cb1-8" title="8">clrs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;#FF3030&quot;</span>, <span class="st">&quot;#FFFF33&quot;</span>, <span class="st">&quot;#20B2AA&quot;</span>)</a>
-<a class="sourceLine" id="cb1-9" title="9"></a>
-<a class="sourceLine" id="cb1-10" title="10">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(Sepal.Length, Sepal.Width, <span class="dt">color =</span> Species)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="st">  </span><span class="kw">theme_lcars_dark</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">clip =</span> <span class="st">&quot;off&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="st">  </span><span class="kw">annotation_custom</span>(logo, <span class="dt">xmin =</span> <span class="fl">9.4</span>, <span class="dt">xmax =</span> <span class="ot">Inf</span>, <span class="dt">ymin =</span> <span class="fl">3.6</span>, <span class="dt">ymax =</span> <span class="ot">Inf</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> clrs)</a>
-<a class="sourceLine" id="cb1-16" title="16"></a>
-<a class="sourceLine" id="cb1-17" title="17">len_frac &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.55</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb1-18" title="18">n_seg &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb1-19" title="19">corner_colors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;chestnut-rose&quot;</span>, <span class="st">&quot;lilac&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;pale-canary&quot;</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb1-20" title="20">side_colors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;pale-canary&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;anakiwa&quot;</span>, <span class="st">&quot;lilac&quot;</span>), <span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb1-21" title="21">                    <span class="kw">c</span>(<span class="st">&quot;#000000&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;anakiwa&quot;</span>, <span class="dv">2</span>), <span class="kw">rep</span>(<span class="st">&quot;orange-peel&quot;</span>, <span class="dv">5</span>)))</a>
-<a class="sourceLine" id="cb1-22" title="22">side_labels &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb1-23" title="23">  <span class="st">&quot;R 47.0.2&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;47&quot;</span>, <span class="st">&quot;B4&quot;</span>), <span class="ot">NA</span>, </a>
-<a class="sourceLine" id="cb1-24" title="24">  <span class="kw">c</span>(<span class="st">&quot;LCARS&quot;</span>, <span class="st">&quot;47174-A&quot;</span>, <span class="st">&quot;...&quot;</span>, <span class="st">&quot;O&#39;Brien&quot;</span>, <span class="st">&quot;Lefler&quot;</span>, <span class="st">&quot;La Forge&quot;</span>, <span class="st">&quot;Barclay&quot;</span>, <span class="st">&quot;Argyle&quot;</span>))</a>
-<a class="sourceLine" id="cb1-25" title="25"></a>
-<a class="sourceLine" id="cb1-26" title="26"><span class="kw">lcars_border</span>(g, <span class="dt">corners =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">length_frac =</span> len_frac, <span class="dt">side_n_segments =</span> n_seg, </a>
-<a class="sourceLine" id="cb1-27" title="27">             <span class="dt">corner_color =</span> corner_colors, <span class="dt">side_color =</span> side_colors, </a>
-<a class="sourceLine" id="cb1-28" title="28">             <span class="dt">side_label =</span> side_labels, <span class="dt">label_size =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb1-29" title="29"></a>
-<a class="sourceLine" id="cb1-30" title="30"><span class="kw">text</span>(<span class="fl">2.8</span>, <span class="fl">0.1</span>, <span class="st">&quot;Iris dataset (classic Terran flora sample)&quot;</span>, </a>
-<a class="sourceLine" id="cb1-31" title="31">     <span class="dt">col =</span> <span class="kw">lcars_colors</span>(<span class="st">&quot;anakiwa&quot;</span>), <span class="dt">font =</span> <span class="dv">2</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb1-32" title="32"><span class="kw">text</span>(<span class="fl">7.55</span>, <span class="fl">0.1</span>, <span class="st">&quot;LCARS BETA R Interface v0.0.1&quot;</span>, </a>
-<a class="sourceLine" id="cb1-33" title="33">     <span class="dt">col =</span> <span class="kw">lcars_colors</span>(<span class="st">&quot;pale-canary&quot;</span>), <span class="dt">font =</span> <span class="dv">2</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(lcars)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(trekcolors)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(grid)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(png)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>logo &lt;-<span class="st"> </span><span class="kw">rasterGrob</span>(<span class="kw">readPNG</span>(<span class="kw">system.file</span>(<span class="st">&quot;stlogo-white.png&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;lcars&quot;</span>)))</span>
+<span id="cb1-8"><a href="#cb1-8"></a>clrs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;#FF3030&quot;</span>, <span class="st">&quot;#FFFF33&quot;</span>, <span class="st">&quot;#20B2AA&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a>g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(Sepal.Length, Sepal.Width, <span class="dt">color =</span> Species)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="st">  </span><span class="kw">theme_lcars_dark</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">clip =</span> <span class="st">&quot;off&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="st">  </span><span class="kw">annotation_custom</span>(logo, <span class="dt">xmin =</span> <span class="fl">9.4</span>, <span class="dt">xmax =</span> <span class="ot">Inf</span>, <span class="dt">ymin =</span> <span class="fl">3.6</span>, <span class="dt">ymax =</span> <span class="ot">Inf</span>) <span class="op">+</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> clrs)</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>len_frac &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.55</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>)</span>
+<span id="cb1-18"><a href="#cb1-18"></a>n_seg &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">8</span>)</span>
+<span id="cb1-19"><a href="#cb1-19"></a>corner_colors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;chestnut-rose&quot;</span>, <span class="st">&quot;lilac&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;pale-canary&quot;</span>, <span class="dv">2</span>))</span>
+<span id="cb1-20"><a href="#cb1-20"></a>side_colors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;pale-canary&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;anakiwa&quot;</span>, <span class="st">&quot;lilac&quot;</span>), <span class="ot">NA</span>,</span>
+<span id="cb1-21"><a href="#cb1-21"></a>                    <span class="kw">c</span>(<span class="st">&quot;#000000&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;anakiwa&quot;</span>, <span class="dv">2</span>), <span class="kw">rep</span>(<span class="st">&quot;orange-peel&quot;</span>, <span class="dv">5</span>)))</span>
+<span id="cb1-22"><a href="#cb1-22"></a>side_labels &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb1-23"><a href="#cb1-23"></a>  <span class="st">&quot;R 47.0.2&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;47&quot;</span>, <span class="st">&quot;B4&quot;</span>), <span class="ot">NA</span>, </span>
+<span id="cb1-24"><a href="#cb1-24"></a>  <span class="kw">c</span>(<span class="st">&quot;LCARS&quot;</span>, <span class="st">&quot;47174-A&quot;</span>, <span class="st">&quot;...&quot;</span>, <span class="st">&quot;O&#39;Brien&quot;</span>, <span class="st">&quot;Lefler&quot;</span>, <span class="st">&quot;La Forge&quot;</span>, <span class="st">&quot;Barclay&quot;</span>, <span class="st">&quot;Argyle&quot;</span>))</span>
+<span id="cb1-25"><a href="#cb1-25"></a></span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="kw">lcars_border</span>(g, <span class="dt">corners =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">length_frac =</span> len_frac, <span class="dt">side_n_segments =</span> n_seg, </span>
+<span id="cb1-27"><a href="#cb1-27"></a>             <span class="dt">corner_color =</span> corner_colors, <span class="dt">side_color =</span> side_colors, </span>
+<span id="cb1-28"><a href="#cb1-28"></a>             <span class="dt">side_label =</span> side_labels, <span class="dt">label_size =</span> <span class="fl">0.7</span>)</span>
+<span id="cb1-29"><a href="#cb1-29"></a></span>
+<span id="cb1-30"><a href="#cb1-30"></a><span class="kw">text</span>(<span class="fl">2.8</span>, <span class="fl">0.1</span>, <span class="st">&quot;Iris dataset (classic Terran flora sample)&quot;</span>, </span>
+<span id="cb1-31"><a href="#cb1-31"></a>     <span class="dt">col =</span> <span class="kw">lcars_colors</span>(<span class="st">&quot;anakiwa&quot;</span>), <span class="dt">font =</span> <span class="dv">2</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</span>
+<span id="cb1-32"><a href="#cb1-32"></a><span class="kw">text</span>(<span class="fl">7.55</span>, <span class="fl">0.1</span>, <span class="st">&quot;LCARS BETA R Interface v0.0.1&quot;</span>, </span>
+<span id="cb1-33"><a href="#cb1-33"></a>     <span class="dt">col =</span> <span class="kw">lcars_colors</span>(<span class="st">&quot;pale-canary&quot;</span>), <span class="dt">font =</span> <span class="dv">2</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" width="100%" /></p>
 <p>As you can see, a decent plot is still going to take some customization with additional commands in order to give it the level of polish it deserves.</p>
 <p>But this is just the appetizer; next is the Shiny version.</p>
@@ -350,47 +414,48 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>There are several functions you can explore. There are a handful of simple wrappers around various Shiny inputs that give them an LCARS aesthetic, but not many currently and they will continue to be improved upon in subsequent package versions.</p>
 <p>The primary function of interest is <code>lcarsBox</code>. This is the container that captures the LCARS style. Additional functions worth focusing on include <code>lcarsHeader</code> for breaking up sections of the UI; also <code>lcarsButton</code> and <code>lcarsToggle</code>, which in conjunction with <code>buttonColumn</code> produce column inputs that fit well into the sidebars of an <code>lcarsBox</code>.</p>
 <p>Here is a simple example.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="cf">if</span> (<span class="kw">interactive</span>()) {</a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3">  ui &lt;-<span class="st"> </span><span class="kw">lcarsPage</span>(</a>
-<a class="sourceLine" id="cb2-4" title="4">    <span class="kw">lcarsBox</span>(</a>
-<a class="sourceLine" id="cb2-5" title="5">      <span class="kw">fluidRow</span>(</a>
-<a class="sourceLine" id="cb2-6" title="6">        <span class="kw">column</span>(<span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb2-7" title="7">          <span class="kw">h4</span>(<span class="st">&quot;Main panel area&quot;</span>),</a>
-<a class="sourceLine" id="cb2-8" title="8">          <span class="kw">HTML</span>(<span class="st">&quot;&lt;p&gt;Some paragraph text and &lt;a href=&#39;#&#39;&gt;a link&lt;/a&gt;</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="st">          with LCARS styling.&lt;/p&gt;</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="st">          &lt;p&gt;Use &lt;code&gt;lcarsPage&lt;/code&gt;</span></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="st">          to apply the LCARS theme and &lt;code&gt;lcarsBox&lt;/code&gt;</span></a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="st">          to draw a characteristic box for framing content.&lt;/p&gt;</span></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="st">          &lt;p&gt;Many of the &lt;code&gt;lcarsBox&lt;/code&gt;</span></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="st">          properties are configurable.</span></a>
-<a class="sourceLine" id="cb2-15" title="15"><span class="st">          See &lt;code&gt;lcars::lcarsApp(</span><span class="ch">\&quot;</span><span class="st">box</span><span class="ch">\&quot;</span><span class="st">)&lt;/code&gt; for a demo&lt;/p&gt;&quot;</span>)</a>
-<a class="sourceLine" id="cb2-16" title="16">        ),</a>
-<a class="sourceLine" id="cb2-17" title="17">        <span class="kw">column</span>(<span class="dv">9</span>, <span class="kw">plotOutput</span>(<span class="st">&quot;plot1&quot;</span>))</a>
-<a class="sourceLine" id="cb2-18" title="18">      ),</a>
-<a class="sourceLine" id="cb2-19" title="19">      <span class="dt">title =</span> <span class="st">&quot;box title&quot;</span>,</a>
-<a class="sourceLine" id="cb2-20" title="20">      <span class="dt">left_inputs =</span> <span class="kw">buttonColumn</span>(<span class="kw">lcarsButton</span>(<span class="st">&quot;btn1&quot;</span>, <span class="st">&quot;A button&quot;</span>))</a>
-<a class="sourceLine" id="cb2-21" title="21">    )</a>
-<a class="sourceLine" id="cb2-22" title="22">  )</a>
-<a class="sourceLine" id="cb2-23" title="23"></a>
-<a class="sourceLine" id="cb2-24" title="24">  server &lt;-<span class="st"> </span><span class="cf">function</span>(input, output) {</a>
-<a class="sourceLine" id="cb2-25" title="25">    output<span class="op">$</span>plot1 &lt;-<span class="st"> </span><span class="kw">renderPlot</span>({</a>
-<a class="sourceLine" id="cb2-26" title="26">      <span class="kw">hist</span>(<span class="kw">rnorm</span>(<span class="dv">500</span>))</a>
-<a class="sourceLine" id="cb2-27" title="27">    })</a>
-<a class="sourceLine" id="cb2-28" title="28">  }</a>
-<a class="sourceLine" id="cb2-29" title="29"></a>
-<a class="sourceLine" id="cb2-30" title="30">  <span class="kw">shinyApp</span>(ui, server)</a>
-<a class="sourceLine" id="cb2-31" title="31">}</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">if</span> (<span class="kw">interactive</span>()) {</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  ui &lt;-<span class="st"> </span><span class="kw">lcarsPage</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="kw">lcarsBox</span>(</span>
+<span id="cb2-5"><a href="#cb2-5"></a>      <span class="kw">fluidRow</span>(</span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="kw">column</span>(<span class="dv">3</span>,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>          <span class="kw">h4</span>(<span class="st">&quot;Main panel area&quot;</span>),</span>
+<span id="cb2-8"><a href="#cb2-8"></a>          <span class="kw">HTML</span>(<span class="st">&quot;&lt;p&gt;Some paragraph text and &lt;a href=&#39;#&#39;&gt;a link&lt;/a&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="st">          with LCARS styling.&lt;/p&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="st">          &lt;p&gt;Use &lt;code&gt;lcarsPage&lt;/code&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="st">          to apply the LCARS theme and &lt;code&gt;lcarsBox&lt;/code&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="st">          to draw a characteristic box for framing content.&lt;/p&gt;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="st">          &lt;p&gt;Many of the &lt;code&gt;lcarsBox&lt;/code&gt;</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="st">          properties are configurable.</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="st">          See &lt;code&gt;lcars::lcarsApp(</span><span class="ch">\&quot;</span><span class="st">box</span><span class="ch">\&quot;</span><span class="st">)&lt;/code&gt; for a demo&lt;/p&gt;&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16"></a>        ),</span>
+<span id="cb2-17"><a href="#cb2-17"></a>        <span class="kw">column</span>(<span class="dv">9</span>, <span class="kw">plotOutput</span>(<span class="st">&quot;plot1&quot;</span>))</span>
+<span id="cb2-18"><a href="#cb2-18"></a>      ),</span>
+<span id="cb2-19"><a href="#cb2-19"></a>      <span class="dt">title =</span> <span class="st">&quot;box title&quot;</span>,</span>
+<span id="cb2-20"><a href="#cb2-20"></a>      <span class="dt">left_inputs =</span> <span class="kw">buttonColumn</span>(<span class="kw">lcarsButton</span>(<span class="st">&quot;btn1&quot;</span>, <span class="st">&quot;A button&quot;</span>))</span>
+<span id="cb2-21"><a href="#cb2-21"></a>    )</span>
+<span id="cb2-22"><a href="#cb2-22"></a>  )</span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a>  server &lt;-<span class="st"> </span><span class="cf">function</span>(input, output) {</span>
+<span id="cb2-25"><a href="#cb2-25"></a>    output<span class="op">$</span>plot1 &lt;-<span class="st"> </span><span class="kw">renderPlot</span>({</span>
+<span id="cb2-26"><a href="#cb2-26"></a>      <span class="kw">hist</span>(<span class="kw">rnorm</span>(<span class="dv">500</span>))</span>
+<span id="cb2-27"><a href="#cb2-27"></a>    })</span>
+<span id="cb2-28"><a href="#cb2-28"></a>  }</span>
+<span id="cb2-29"><a href="#cb2-29"></a></span>
+<span id="cb2-30"><a href="#cb2-30"></a>  <span class="kw">shinyApp</span>(ui, server)</span>
+<span id="cb2-31"><a href="#cb2-31"></a>}</span></code></pre></div>
 </div>
 <div id="demo-apps" class="section level2">
 <h2>Demo apps</h2>
 <p>Rather than post lots of code here in a non-interactive package vignette, the best suggestion is to explore the example apps included in the package. The source code is easy to browse in the GitHub repository.</p>
 <p>Use <code>lcarsApp</code> to loads various demo apps:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">lcarsApp</span>(<span class="st">&quot;demo&quot;</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw">lcarsApp</span>(<span class="st">&quot;box&quot;</span>)</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="kw">lcarsApp</span>(<span class="st">&quot;sweep&quot;</span>)</a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="kw">lcarsApp</span>(<span class="st">&quot;toggle&quot;</span>)</a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="kw">lcarsApp</span>(<span class="st">&quot;elements&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">lcarsApp</span>(<span class="st">&quot;demo&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">lcarsApp</span>(<span class="st">&quot;box&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">lcarsApp</span>(<span class="st">&quot;sweep&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">lcarsApp</span>(<span class="st">&quot;toggle&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">lcarsApp</span>(<span class="st">&quot;elements&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">lcarsApp</span>(<span class="st">&quot;leaflet&quot;</span>)</span></code></pre></div>
 <p>The <code>box</code> example is helpful for exploring the many ways you can control the style of an <code>lcarsBox</code>. Here are a couple examples highlighting some of the versatility:</p>
 <div id="corner-elbows-only" class="section level3">
 <h3>Corner elbows only</h3>
@@ -417,46 +482,46 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h3>Official LCARS colors</h3>
 <p>Familiarize yourself with LCARS colors from the <code>trekcolors</code> package. This package is a dependency of <code>lcars</code>. It includes various other Star Trek color palettes. Most notably it includes a function for previewing the palettes.</p>
 <p>There are several generations of LCARS color palettes. The <code>lcarsdata</code> dataset in <code>lcars</code> provides a convenient data frame of the four main series of LCARS color palettes with official color names, but <code>trekcolors</code> offers several helpful functions related to LCARS colors, including LCARS-themed <code>scale_*</code> functions for use with <code>ggplot2</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">head</span>(lcarsdata)</a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt;              series         name   value</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt; pale-canary    2357  pale-canary #FFFF99</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt; tanoi          2357        tanoi #FFCC99</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; golden-tanoi   2357 golden-tanoi #FFCC66</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; neon-carrot    2357  neon-carrot #FF9933</span></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt; eggplant       2357     eggplant #664466</span></a>
-<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; lilac          2357        lilac #CC99CC</span></a>
-<a class="sourceLine" id="cb4-9" title="9"></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="kw">library</span>(trekcolors)</a>
-<a class="sourceLine" id="cb4-12" title="12"></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="kw">lcars_colors</span>()</a>
-<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt;      pale-canary            tanoi     golden-tanoi      neon-carrot </span></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt;        &quot;#FFFF99&quot;        &quot;#FFCC99&quot;        &quot;#FFCC66&quot;        &quot;#FF9933&quot; </span></a>
-<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt;         eggplant            lilac          anakiwa          mariner </span></a>
-<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt;        &quot;#664466&quot;        &quot;#CC99CC&quot;        &quot;#99CCFF&quot;        &quot;#3366CC&quot; </span></a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt;      bahama-blue        blue-bell          melrose          hopbush </span></a>
-<a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt;        &quot;#006699&quot;        &quot;#9999CC&quot;        &quot;#9999FF&quot;        &quot;#CC6699&quot; </span></a>
-<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt;    chestnut-rose      orange-peel atomic-tangerine            danub </span></a>
-<a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt;        &quot;#CC6666&quot;        &quot;#FF9966&quot;        &quot;#FF9900&quot;        &quot;#6688CC&quot; </span></a>
-<a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt;           indigo  lavender-purple           cosmic       red-damask </span></a>
-<a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt;        &quot;#4455BB&quot;        &quot;#9977AA&quot;        &quot;#774466&quot;        &quot;#DD6644&quot; </span></a>
-<a class="sourceLine" id="cb4-24" title="24"><span class="co">#&gt;   medium-carmine          bourbon      sandy-brown       periwinkle </span></a>
-<a class="sourceLine" id="cb4-25" title="25"><span class="co">#&gt;        &quot;#AA5533&quot;        &quot;#BB6622&quot;        &quot;#EE9955&quot;        &quot;#CCDDFF&quot; </span></a>
-<a class="sourceLine" id="cb4-26" title="26"><span class="co">#&gt;      dodger-pale      dodger-soft        near-blue        navy-blue </span></a>
-<a class="sourceLine" id="cb4-27" title="27"><span class="co">#&gt;        &quot;#5599FF&quot;        &quot;#3366FF&quot;        &quot;#0011EE&quot;        &quot;#000088&quot; </span></a>
-<a class="sourceLine" id="cb4-28" title="28"><span class="co">#&gt;             husk             rust        tamarillo </span></a>
-<a class="sourceLine" id="cb4-29" title="29"><span class="co">#&gt;        &quot;#BBAA55&quot;        &quot;#BB4411&quot;        &quot;#882211&quot;</span></a>
-<a class="sourceLine" id="cb4-30" title="30"></a>
-<a class="sourceLine" id="cb4-31" title="31"><span class="kw">lcars_colors</span>(<span class="st">&quot;melrose&quot;</span>)</a>
-<a class="sourceLine" id="cb4-32" title="32"><span class="co">#&gt;   melrose </span></a>
-<a class="sourceLine" id="cb4-33" title="33"><span class="co">#&gt; &quot;#9999FF&quot;</span></a>
-<a class="sourceLine" id="cb4-34" title="34"></a>
-<a class="sourceLine" id="cb4-35" title="35"><span class="kw">view_trek_pals</span>(<span class="kw">c</span>(<span class="st">&quot;lcars_2357&quot;</span>, <span class="st">&quot;lcars_2369&quot;</span>, <span class="st">&quot;lcars_2375&quot;</span>, <span class="st">&quot;lcars_2379&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">head</span>(lcarsdata)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt;              series         name   value</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; pale-canary    2357  pale-canary #FFFF99</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; tanoi          2357        tanoi #FFCC99</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; golden-tanoi   2357 golden-tanoi #FFCC66</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; neon-carrot    2357  neon-carrot #FF9933</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; eggplant       2357     eggplant #664466</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; lilac          2357        lilac #CC99CC</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="kw">library</span>(trekcolors)</span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="kw">lcars_colors</span>()</span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt;      pale-canary            tanoi     golden-tanoi      neon-carrot </span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt;        &quot;#FFFF99&quot;        &quot;#FFCC99&quot;        &quot;#FFCC66&quot;        &quot;#FF9933&quot; </span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt;         eggplant            lilac          anakiwa          mariner </span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt;        &quot;#664466&quot;        &quot;#CC99CC&quot;        &quot;#99CCFF&quot;        &quot;#3366CC&quot; </span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt;      bahama-blue        blue-bell          melrose          hopbush </span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt;        &quot;#006699&quot;        &quot;#9999CC&quot;        &quot;#9999FF&quot;        &quot;#CC6699&quot; </span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt;    chestnut-rose      orange-peel atomic-tangerine            danub </span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt;        &quot;#CC6666&quot;        &quot;#FF9966&quot;        &quot;#FF9900&quot;        &quot;#6688CC&quot; </span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt;           indigo  lavender-purple           cosmic       red-damask </span></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt;        &quot;#4455BB&quot;        &quot;#9977AA&quot;        &quot;#774466&quot;        &quot;#DD6644&quot; </span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt;   medium-carmine          bourbon      sandy-brown       periwinkle </span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt;        &quot;#AA5533&quot;        &quot;#BB6622&quot;        &quot;#EE9955&quot;        &quot;#CCDDFF&quot; </span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt;      dodger-pale      dodger-soft        near-blue        navy-blue </span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt;        &quot;#5599FF&quot;        &quot;#3366FF&quot;        &quot;#0011EE&quot;        &quot;#000088&quot; </span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt;             husk             rust        tamarillo </span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt;        &quot;#BBAA55&quot;        &quot;#BB4411&quot;        &quot;#882211&quot;</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="kw">lcars_colors</span>(<span class="st">&quot;melrose&quot;</span>)</span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#&gt;   melrose </span></span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; &quot;#9999FF&quot;</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="kw">view_trek_pals</span>(<span class="kw">c</span>(<span class="st">&quot;lcars_2357&quot;</span>, <span class="st">&quot;lcars_2369&quot;</span>, <span class="st">&quot;lcars_2375&quot;</span>, <span class="st">&quot;lcars_2379&quot;</span>))</span></code></pre></div>
 <p><img src="data:image/png;base64,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" width="100%" /></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(carat, <span class="kw">stat</span>(count), <span class="dt">fill =</span> cut)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_fill_lcars</span>(<span class="st">&quot;2357&quot;</span>)</a></code></pre></div>
-<p><img src="data:image/png;base64,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" width="100%" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(carat, <span class="kw">stat</span>(count), <span class="dt">fill =</span> cut)) <span class="op">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_fill_lcars</span>(<span class="st">&quot;2357&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" width="100%" /></p>
 <p>Functions in <code>lcars</code> that accept color arguments will take any hex color, but will also accept official LCARS colors by name.</p>
 </div>
 </div>

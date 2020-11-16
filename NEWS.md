@@ -1,3 +1,11 @@
+# lcars 0.3.6
+
+* Replaced deprecated functions in demo apps.
+
+# lcars 0.3.5
+
+* Added demo Shiny app containing Leaflet examples.
+
 # lcars.0.3.1
 
 * Made changes to some examples per CRAN request.

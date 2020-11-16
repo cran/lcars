@@ -3,14 +3,14 @@
 
 # lcars <img src="man/figures/logo.png" style="margin-left:10px;margin-bottom:5px;" width="120" align="right">
 
-**Author:** [Matthew Leonawicz](https://leonawicz.github.io/blog/)
+**Author:** [Matthew Leonawicz](https://github.com/leonawicz)
 <a href="https://orcid.org/0000-0001-9452-2771" target="orcid.widget">
 <image class="orcid" src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" height="16"></a>
 <br/> **License:** [MIT](https://opensource.org/licenses/MIT)<br/>
 
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
-developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/)
 [![Travis build
 status](https://travis-ci.org/leonawicz/lcars.svg?branch=master)](https://travis-ci.org/leonawicz/lcars)
 [![AppVeyor build
@@ -24,8 +24,6 @@ status](http://www.r-pkg.org/badges/version/lcars)](https://cran.r-project.org/p
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/lcars)](https://cran.r-project.org/package=lcars)
 [![Github
 Stars](https://img.shields.io/github/stars/leonawicz/lcars.svg?style=social&label=Github)](https://github.com/leonawicz/lcars)
-
-[![Donate](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://ko-fi.com/leonawicz)
 
 ## Library Computer Access/Retrieval System ([LCARS](https://en.wikipedia.org/wiki/LCARS))
 
@@ -230,9 +228,23 @@ True (Trek) type fonts to style your Star Trek themed graphics text.
 
 <br>
 
-*If you enjoy my R community contributions, consider* ***[buying me a
-coffee in Ko-fi](https://ko-fi.com/leonawicz)*** *so I can keep
-developing and maintaining this and other packages :)*
+## Citation
+
+Matthew Leonawicz (2020). lcars: LCARS Aesthetic for Shiny. R package
+version 0.3.6. <https://github.com/leonawicz/lcars>
+
+## Contribute
+
+Contributions are welcome. Contribute through GitHub via pull request.
+Please create an issue first if it is regarding any substantive feature
+add or change.
+
+If you enjoy my open source R community contributions, please consider a
+donation :).
+
+  - [Buy me a coffee in Ko-fi](https://ko-fi.com/leonawicz)
+  - `leonawicz.crypto`
+  - `mfl$payid.crypto.com`
 
 -----
 
