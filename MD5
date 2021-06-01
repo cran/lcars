@@ -1,7 +1,7 @@
-60a949b26b0dfc8aaa069208a75e463c *DESCRIPTION
+112cdb958c142addb6614f53d731fd52 *DESCRIPTION
 242c51a512aa60d760414c6974c2d804 *LICENSE
 823a13022aefc7b3c43e6355950b5865 *NAMESPACE
-6aa1f9c57bf5630098765f1956178a04 *NEWS.md
+5f786d67bcf8787b07446e47fcbf832f *NEWS.md
 6dd7310d56ea98a577274bf028c4642b *R/data.R
 46971fe98c10eb7dda2f63d68c1b62be *R/lcars.R
 8903c1e5cbcb0621a15cd4ff51c3958e *R/plot.R
@@ -16,13 +16,13 @@ b627b35607c0bb6ebf113ad176a767c2 *R/shiny-sweep.R
 f9c517e2da8f143a976ca7771be81be5 *R/shiny-toggle.R
 f3fb9db95421029058f947b64e105cc6 *R/shiny.R
 c835d256862f2dafc286f46daf003816 *R/themes.R
-483585fd1e3e3662aaf9867107e7c1f4 *README.md
-01fd09533216f6dd1e6309746de4776e *build/vignette.rds
+ca456cdccd706ab70448afb91d79432c *README.md
+017fbc88005801e1220663f60e294f43 *build/vignette.rds
 a08c16322e1dddbd60b0caf818bd0eb0 *data/lcarsdata.rda
 cfab8d4a8ef811581ed8f0717ad3997d *inst/WORDLIST
 d113d64347b6045610328246f725a063 *inst/doc/lcars.R
 b65d1d4d4604ff1065949f219a86925a *inst/doc/lcars.Rmd
-114eca96210648954d8b6bb8928ce391 *inst/doc/lcars.html
+2078a42118860db888f0fd43b0916029 *inst/doc/lcars.html
 309fd366b8a26ad151614be0fc29d7e1 *inst/shiny/box/app.R
 d319c1c06d9993717a7a0695a32c276f *inst/shiny/demo/app.R
 8abd9dffec03b52df60e3d22b7001263 *inst/shiny/demo/demoApp.RData
