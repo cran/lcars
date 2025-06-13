@@ -39,45 +39,45 @@ text(7.55, 0.1, "LCARS BETA R Interface v0.0.1",
      col = lcars_colors("pale-canary"), font = 2, cex = 0.7)
 
 ## ----ex1, eval=FALSE----------------------------------------------------------
-#  if (interactive()) {
-#  
-#    ui <- lcarsPage(
-#      lcarsBox(
-#        fluidRow(
-#          column(3,
-#            h4("Main panel area"),
-#            HTML("<p>Some paragraph text and <a href='#'>a link</a>
-#            with LCARS styling.</p>
-#            <p>Use <code>lcarsPage</code>
-#            to apply the LCARS theme and <code>lcarsBox</code>
-#            to draw a characteristic box for framing content.</p>
-#            <p>Many of the <code>lcarsBox</code>
-#            properties are configurable.
-#            See <code>lcars::lcarsApp(\"box\")</code> for a demo</p>")
-#          ),
-#          column(9, plotOutput("plot1"))
-#        ),
-#        title = "box title",
-#        left_inputs = buttonColumn(lcarsButton("btn1", "A button"))
-#      )
-#    )
-#  
-#    server <- function(input, output) {
-#      output$plot1 <- renderPlot({
-#        hist(rnorm(500))
-#      })
-#    }
-#  
-#    shinyApp(ui, server)
-#  }
+# if (interactive()) {
+# 
+#   ui <- lcarsPage(
+#     lcarsBox(
+#       fluidRow(
+#         column(3,
+#           h4("Main panel area"),
+#           HTML("<p>Some paragraph text and <a href='#'>a link</a>
+#           with LCARS styling.</p>
+#           <p>Use <code>lcarsPage</code>
+#           to apply the LCARS theme and <code>lcarsBox</code>
+#           to draw a characteristic box for framing content.</p>
+#           <p>Many of the <code>lcarsBox</code>
+#           properties are configurable.
+#           See <code>lcars::lcarsApp(\"box\")</code> for a demo</p>")
+#         ),
+#         column(9, plotOutput("plot1"))
+#       ),
+#       title = "box title",
+#       left_inputs = buttonColumn(lcarsButton("btn1", "A button"))
+#     )
+#   )
+# 
+#   server <- function(input, output) {
+#     output$plot1 <- renderPlot({
+#       hist(rnorm(500))
+#     })
+#   }
+# 
+#   shinyApp(ui, server)
+# }
 
 ## ----apps, eval=FALSE---------------------------------------------------------
-#  lcarsApp("demo")
-#  lcarsApp("box")
-#  lcarsApp("sweep")
-#  lcarsApp("toggle")
-#  lcarsApp("elements")
-#  lcarsApp("leaflet")
+# lcarsApp("demo")
+# lcarsApp("box")
+# lcarsApp("sweep")
+# lcarsApp("toggle")
+# lcarsApp("elements")
+# lcarsApp("leaflet")
 
 ## ----img1, echo=FALSE---------------------------------------------------------
 knitr::include_graphics("lcarsBox-ex1.png")
